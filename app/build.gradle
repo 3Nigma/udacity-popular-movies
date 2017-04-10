@@ -12,7 +12,7 @@ android {
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
 
         // The Movie Database's API base address
-        buildConfigField "String", "TMDB_URI_BASE", "https://api.themoviedb.org/3/"
+        buildConfigField "String", "TMDB_URI_BASE", "\"https://api.themoviedb.org/3/\""
         buildConfigField "String", "TMDB_API_KEY", "\"" + TMDB_API_KEY + "\""
 
         if (TMDB_API_KEY == "PLEASE-USER-YOUR-OWN-TMDB-API") {
@@ -35,13 +35,18 @@ dependencies {
     androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
+
+    compile 'com.android.support:design:25.3.0'
     compile 'com.android.support:appcompat-v7:25.3.0'
+    compile 'com.android.support:recyclerview-v7:25.3.0'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
+    compile 'com.jakewharton.timber:timber:4.5.1'
     compile 'com.squareup.picasso:picasso:2.5.2'
 
     // Retrofit region
     compile 'com.squareup.retrofit2:retrofit:2.2.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.2.0'
     compile 'com.squareup.retrofit2:converter-gson:2.2.0'
 
     // RxJava region
@@ -50,5 +55,4 @@ dependencies {
 
     // Testing dependencies
     testCompile 'junit:junit:4.12'
-    compile 'com.android.support:recyclerview-v7:25.3.0'
 }
