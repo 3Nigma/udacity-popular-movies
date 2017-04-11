@@ -13,7 +13,7 @@
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
-            android:layout_height="124dp"
+            android:layout_height="100dp"
             android:theme="@style/AppTheme.AppBarOverlay">
 
             <android.support.v7.widget.Toolbar
@@ -60,19 +60,16 @@
                 android:layout_marginEnd="8dp" />
 
             <LinearLayout
-                android:layout_width="0dp"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginBottom="1dp"
                 android:layout_marginLeft="16dp"
-                android:layout_marginRight="8dp"
                 android:orientation="vertical"
                 app:layout_constraintBottom_toBottomOf="@+id/iv_movie_details_poster"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintLeft_toRightOf="@+id/iv_movie_details_poster"
-                app:layout_constraintRight_toRightOf="parent"
                 app:layout_constraintTop_toTopOf="@+id/iv_movie_details_poster"
                 android:layout_marginStart="16dp"
-                android:layout_marginEnd="8dp">
+                android:id="@+id/linearLayout">
 
                 <TextView
                     android:id="@+id/textView5"
@@ -105,21 +102,20 @@
             <ScrollView
                 android:layout_width="0dp"
                 android:layout_height="0dp"
-                android:layout_marginLeft="8dp"
-                android:layout_marginRight="8dp"
-                android:layout_marginTop="16dp"
-                app:layout_constraintHorizontal_bias="0.0"
-                app:layout_constraintLeft_toLeftOf="parent"
-                app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/iv_movie_details_poster"
+                android:layout_marginBottom="8dp"
                 app:layout_constraintBottom_toBottomOf="parent"
-                android:layout_marginBottom="8dp">
+                app:layout_constraintLeft_toRightOf="@+id/linearLayout"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintHorizontal_bias="0.503"
+                app:layout_constraintTop_toTopOf="@+id/iv_movie_details_poster"
+                android:layout_marginTop="0dp"
+                android:layout_marginLeft="8dp"
+                android:layout_marginRight="8dp">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:orientation="vertical"
-                    tools:layout_editor_absoluteY="16dp">
+                    android:orientation="vertical">
 
                     <TextView
                         android:id="@+id/textView7"
@@ -133,10 +129,7 @@
                         android:id="@+id/tv_moview_detail_plot"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="8dp"
                         android:layout_weight="1"
-                        android:paddingLeft="16dp"
-                        android:paddingRight="16dp"
                         android:text="@{movie.ploySynopsis}"
                         app:layout_constraintLeft_toLeftOf="parent"
                         app:layout_constraintRight_toRightOf="parent"

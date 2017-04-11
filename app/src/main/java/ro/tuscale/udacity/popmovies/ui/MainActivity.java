@@ -8,6 +8,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -81,6 +82,16 @@ public class MainActivity extends AppCompatActivity implements MoviesAdapter.Mov
             mLoadingDlg = new ProgressDialog(this);
             mLoadingDlg.setIndeterminate(true);
             mLoadingDlg.setCancelable(false);
+            mLoadingDlg.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                @Override
+                public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                    if (keyCode == KeyEvent.KEYCODE_BACK) {
+                        dialog.dismiss();
+                        finish();
+                    }
+                    return true;
+                }
+            });
             mLoadingDlg.setMessage("Fetching movies ...");
         }
         mLoadingDlg.show();
