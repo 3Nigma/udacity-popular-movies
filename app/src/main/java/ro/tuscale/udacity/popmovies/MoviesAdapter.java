@@ -137,7 +137,11 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
         }
 
         void bind(Movie movie) {
-            Picasso.with(mContext).load(movie.getPosterPath()).into(mMoviePoster);
+            Picasso.with(mContext)
+                    .load(movie.getPosterPath())
+                    .placeholder(R.drawable.ic_movie_24dp)
+                    .error(R.drawable.ic_error_outline_24dp)
+                    .into(mMoviePoster);
         }
     }
 
