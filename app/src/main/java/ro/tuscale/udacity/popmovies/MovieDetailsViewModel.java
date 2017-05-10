@@ -25,7 +25,10 @@ public class MovieDetailsViewModel {
     }
 
     public String getAverageMark() {
-        return String.format("%.2f", mMovie.getVoteAverage());
+        return String.format("%.1f/10", getAverageRating());
+    }
+    public float getAverageRating() {
+        return (float) mMovie.getVoteAverage();
     }
 
     public String getPloySynopsis() {

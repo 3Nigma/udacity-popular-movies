@@ -1,15 +1,21 @@
 apply plugin: 'com.android.application'
+apply plugin: 'realm-android'
 
 android {
     compileSdkVersion 25
     buildToolsVersion "25.0.2"
     defaultConfig {
         applicationId "ro.tuscale.udacity.popmovies"
-        minSdkVersion 15
+        minSdkVersion 16
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+
+        // Needed for loading vector images
+        vectorDrawables {
+            useSupportLibrary true
+        }
 
         // The Movie Database's API base address
         buildConfigField "String", "TMDB_URI_BASE", "\"https://api.themoviedb.org/3/\""
@@ -36,9 +42,9 @@ dependencies {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
 
-    compile 'com.android.support:design:25.3.0'
-    compile 'com.android.support:appcompat-v7:25.3.0'
-    compile 'com.android.support:recyclerview-v7:25.3.0'
+    compile 'com.android.support:design:25.3.1'
+    compile 'com.android.support:appcompat-v7:25.3.1'
+    compile 'com.android.support:recyclerview-v7:25.3.1'
     compile 'com.android.support.constraint:constraint-layout:1.0.2'
 
     compile 'com.jakewharton.timber:timber:4.5.1'

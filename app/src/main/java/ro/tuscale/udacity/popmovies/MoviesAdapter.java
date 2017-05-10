@@ -50,12 +50,18 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
         if (mSortType != desiredSortOrder) {
             mSortType = desiredSortOrder;
 
-            if (mSortChangedListener != null) mSortChangedListener.onNewSortStarted();
-            mLastLoadedPage = 0;
-            if (mMovies != null) notifyItemRangeRemoved(0, mMovies.size());
-            mMovies = new ArrayList<>();
+            if (mSortType == SortingType.FAVORITED) {
+                mMovies = Movie.getAllFavorites();
 
-            loadNextMoviePage();
+                notifyDataSetChanged();
+            } else {
+                if (mSortChangedListener != null) mSortChangedListener.onNewSortStarted();
+                mLastLoadedPage = 0;
+                if (mMovies != null) notifyItemRangeRemoved(0, mMovies.size());
+                mMovies = new ArrayList<>();
+
+                loadNextMoviePage();
+            }
         }
     }
 
@@ -70,7 +76,20 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
                         List<Movie> moviesOnPage = moviesPage.getMovies();
                         int prevMoviesListSize = mMovies.size();
 
-                        mMovies.addAll(moviesOnPage);
+                        // Go over the received movies. We might have havorites among them in which case we
+                        // just load the movie from local cache and use them directly, bypassing videos & comments
+                        // api calls thus saving bandwidth
+                        for (Movie movie : moviesOnPage) {
+                            Movie favMovie = Movie.getFavoriteById(movie.getId());
+
+                            if (favMovie != null) {
+                                // Fav movie. Use it instead
+                                mMovies.add(favMovie);
+                            } else {
+                                // Normal movie. Add it as it is
+                                mMovies.add(movie);
+                            }
+                        }
                         notifyItemRangeInserted(prevMoviesListSize, moviesOnPage.size());
                         mLastLoadedPage++;
                         isRequestingMoviePage = false;
@@ -96,7 +115,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
     public void onBindViewHolder(ViewHolder posterHolder, int position) {
         posterHolder.bind(mMovies.get(position));
 
-        if (position >= (8 * mMovies.size())/10 && isRequestingMoviePage == false) {
+        if (mSortType != SortingType.FAVORITED && position >= (8 * mMovies.size())/10 && isRequestingMoviePage == false) {
             // We passed the 80% mark. Request more movies
             loadNextMoviePage();
         }

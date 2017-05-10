@@ -9,7 +9,10 @@ import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 import retrofit2.converter.gson.GsonConverterFactory;
 import ro.tuscale.udacity.popmovies.BuildConfig;
+import ro.tuscale.udacity.popmovies.models.Movie;
 import ro.tuscale.udacity.popmovies.models.MoviesPage;
+import ro.tuscale.udacity.popmovies.models.ReviewsPage;
+import ro.tuscale.udacity.popmovies.models.VideosList;
 
 public class RestManager {
     private Retrofit mRetrofit;
@@ -39,6 +42,22 @@ public class RestManager {
         }
 
         return moviesSource
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Single<VideosList> getVideosForMovie(int movieId) {
+        TMDBService movieService = mRetrofit.create(TMDBService.class);
+
+        return movieService.getVideosForMovieId(movieId, BuildConfig.TMDB_API_KEY)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Single<ReviewsPage> getMovieReviewsPage(int movieId, int pagNr) {
+        TMDBService movieService = mRetrofit.create(TMDBService.class);
+
+        return movieService.getReviewsPageForMovieId(movieId, BuildConfig.TMDB_API_KEY, pagNr)
                 .subscribeOn(Schedulers.newThread())
                 .observeOn(AndroidSchedulers.mainThread());
     }
