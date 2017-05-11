@@ -1,7 +1,6 @@
 package ro.tuscale.udacity.popmovies.persistance;
 
 import android.content.ContentProvider;
-import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.content.UriMatcher;
 import android.database.Cursor;
@@ -15,11 +14,9 @@ public class FavoriteMoviesProvider extends ContentProvider {
     private static final String BASE_PATH = "fav_movies";
 
     public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY + "/" + BASE_PATH);
-    public static final String CONTENT_TYPE = ContentResolver.CURSOR_DIR_BASE_TYPE + "/" + BASE_PATH;
-    public static final String CONTENT_ITEM_TYPE = ContentResolver.CURSOR_ITEM_BASE_TYPE + "/" + BASE_PATH;
 
-    public static final String _ID = "_ID";
-    public static final String _MOVIE = "movie_cached_data";
+    public static final String _ID = MoviesDatabaseHelper.TABLE_FAVORITE_MOVIES_COLUMN_ID;
+    public static final String _MOVIE = MoviesDatabaseHelper.TABLE_FAVORITE_MOVIES_COLUMN_VALUE;
 
     private MoviesDatabaseHelper mOpenHelper;
 
@@ -99,7 +96,7 @@ public class FavoriteMoviesProvider extends ContentProvider {
 
     @Override
     public int update(@NonNull Uri uri, @Nullable ContentValues values, @Nullable String selection, @Nullable String[] selectionArgs) {
-        // No-op
+        // No-op - not needed
         return 0;
     }
 
