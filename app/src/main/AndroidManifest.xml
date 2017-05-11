@@ -30,6 +30,11 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ro.tuscale.udacity.popmovies.ui.MainActivity" />
         </activity>
+
+        <provider
+            android:authorities="ro.tuscale.udacity.popmovies.provider"
+            android:name=".persistance.FavoriteMoviesProvider"
+            android:exported="false" />
     </application>
 
 </manifest>

@@ -5,24 +5,20 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import io.realm.RealmList;
-import io.realm.RealmModel;
-import io.realm.annotations.RealmClass;
-
-@RealmClass
-public class VideosList implements Parcelable, RealmModel {
+public class VideosList implements Parcelable {
     @SerializedName("results")
-    private RealmList<Video> mVideos;
+    private List<Video> mVideos;
 
     public VideosList() {
         // Required by Realm
     }
 
     private VideosList(Parcel in) {
-        mVideos = new RealmList<>();
-        mVideos.addAll(in.readArrayList(Video.class.getClassLoader()));
+        mVideos = new ArrayList<>();
+        in.readList(mVideos, Video.class.getClassLoader());
     }
 
     public List<Video> getVideos() {

@@ -1,4 +1,4 @@
-package ro.tuscale.udacity.popmovies;
+package ro.tuscale.udacity.popmovies.ui.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -14,8 +14,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import io.reactivex.functions.Consumer;
+import ro.tuscale.udacity.popmovies.ItemClickHandler;
+import ro.tuscale.udacity.popmovies.R;
 import ro.tuscale.udacity.popmovies.backend.RestManager;
 import ro.tuscale.udacity.popmovies.backend.SortingType;
+import ro.tuscale.udacity.popmovies.models.FavoriteMovieManager;
 import ro.tuscale.udacity.popmovies.models.Movie;
 import ro.tuscale.udacity.popmovies.models.MoviesPage;
 import timber.log.Timber;
@@ -26,6 +29,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
     private int mLastLoadedPage;
     private List<Movie> mMovies;
     private boolean isRequestingMoviePage = false;
+    private FavoriteMovieManager mFavMovieManager;
 
     private MovieClickHandler mItemClickHandler;
     private MovieSortHandler mSortChangedListener;
@@ -33,11 +37,9 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
     public MoviesAdapter(@NonNull Context ctx, @NonNull SortingType sortOrder, MovieSortHandler sortChangedListener) {
         this.mContext = ctx;
         this.mSortChangedListener = sortChangedListener;
+        this.mFavMovieManager = new FavoriteMovieManager(mContext);
 
         resetAndLoadByOrder(sortOrder);
-    }
-    public MoviesAdapter(@NonNull Context ctx, @NonNull SortingType sortOrder) {
-        this(ctx, sortOrder, null);
     }
 
     public MoviesAdapter setMovieClickHandler(MovieClickHandler handler) {
@@ -51,7 +53,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
             mSortType = desiredSortOrder;
 
             if (mSortType == SortingType.FAVORITED) {
-                mMovies = Movie.getAllFavorites();
+                mMovies = mFavMovieManager.getAllMovies();
 
                 notifyDataSetChanged();
             } else {
@@ -80,7 +82,7 @@ public class MoviesAdapter extends RecyclerView.Adapter<MoviesAdapter.ViewHolder
                         // just load the movie from local cache and use them directly, bypassing videos & comments
                         // api calls thus saving bandwidth
                         for (Movie movie : moviesOnPage) {
-                            Movie favMovie = Movie.getFavoriteById(movie.getId());
+                            Movie favMovie = mFavMovieManager.getMovieById(movie.getId());
 
                             if (favMovie != null) {
                                 // Fav movie. Use it instead

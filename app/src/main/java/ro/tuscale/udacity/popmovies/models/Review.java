@@ -5,11 +5,7 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
-import io.realm.RealmModel;
-import io.realm.annotations.RealmClass;
-
-@RealmClass
-public class Review implements Parcelable, RealmModel {
+public class Review implements Parcelable {
     @SerializedName("content")
     private String mContent;
     @SerializedName("author")

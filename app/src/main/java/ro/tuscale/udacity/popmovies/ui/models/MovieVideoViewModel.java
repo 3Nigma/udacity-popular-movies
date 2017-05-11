@@ -1,4 +1,4 @@
-package ro.tuscale.udacity.popmovies;
+package ro.tuscale.udacity.popmovies.ui.models;
 
 import ro.tuscale.udacity.popmovies.models.Video;
 

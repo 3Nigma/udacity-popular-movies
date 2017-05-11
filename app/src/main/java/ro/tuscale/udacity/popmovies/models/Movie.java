@@ -11,17 +11,9 @@ import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
 import io.reactivex.functions.Consumer;
-import io.realm.Realm;
-import io.realm.RealmModel;
-import io.realm.RealmObject;
-import io.realm.RealmResults;
-import io.realm.annotations.PrimaryKey;
-import io.realm.annotations.RealmClass;
 import ro.tuscale.udacity.popmovies.backend.RestManager;
 
-@RealmClass
-public class Movie implements Parcelable, RealmModel {
-    @PrimaryKey
+public class Movie implements Parcelable {
     @SerializedName("id")
     private int mId;
     @SerializedName("original_title")
@@ -36,9 +28,6 @@ public class Movie implements Parcelable, RealmModel {
     // TODO: make this a 'Date' object (also involves touching the RestManager)
     @SerializedName("release_date")
     private String mReleaseDate;
-
-    // Non-backend provided values
-    private boolean mIsFavorited;
 
     // Cached values
     private VideosList mVideos;
@@ -57,61 +46,6 @@ public class Movie implements Parcelable, RealmModel {
         this.mReleaseDate = in.readString();
         this.mVideos = in.readParcelable(VideosList.class.getClassLoader());
         this.mReviews = in.readParcelable(ReviewsPage.class.getClassLoader());
-        this.mIsFavorited = (in.readByte() == 1);
-    }
-
-    public static Movie getFavoriteById(int movieId) {
-        Realm realm = Realm.getDefaultInstance();
-        Movie favMovie = realm.where(Movie.class)
-                              .equalTo("mId", movieId)
-                              .equalTo("mIsFavorited", true)
-                              .findFirst();
-
-        if (favMovie != null) {
-            favMovie = realm.copyFromRealm(favMovie);
-        }
-        realm.close();
-
-        return favMovie;
-    }
-    public static List<Movie> getAllFavorites() {
-        Realm realm = Realm.getDefaultInstance();
-        RealmResults<Movie> favManagedMovies = realm.where(Movie.class)
-                .equalTo("mIsFavorited", true)
-                .findAll();
-        List<Movie> favMovies = realm.copyFromRealm(favManagedMovies);
-
-        realm.close();
-
-        return favMovies;
-    }
-
-    public boolean isItFavorite() {
-        return mIsFavorited;
-    }
-    public void setFavorited(final boolean isIt) {
-        if (mIsFavorited != isIt) {
-            // Indeed, there was a change
-            Realm realm = Realm.getDefaultInstance();
-
-            realm.executeTransaction(new Realm.Transaction() {
-                @Override
-                public void execute(Realm realm) {
-                    mIsFavorited = isIt;
-                    if (isIt) {
-                        realm.copyToRealm(Movie.this);
-                    } else {
-                        RealmObject.deleteFromRealm(
-                                realm.where(Movie.class)
-                                    .equalTo("mId", Movie.this.getId())
-                                    .equalTo("mIsFavorited", true)
-                                    .findFirst()
-                            );
-                    }
-                }
-            });
-            realm.close();
-        }
     }
 
     public int getId() {
@@ -213,7 +147,6 @@ public class Movie implements Parcelable, RealmModel {
         dest.writeString(mReleaseDate);
         dest.writeParcelable(mVideos, flags);
         dest.writeParcelable(mReviews, flags);
-        dest.writeByte((byte) (mIsFavorited ? 1 : 0));
     }
 
     public static final Parcelable.Creator<Movie> CREATOR = new Parcelable.Creator<Movie>() {

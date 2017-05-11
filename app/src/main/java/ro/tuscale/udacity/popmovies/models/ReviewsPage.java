@@ -5,16 +5,12 @@ import android.os.Parcelable;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.util.ArrayList;
 import java.util.List;
 
-import io.realm.RealmList;
-import io.realm.RealmModel;
-import io.realm.annotations.RealmClass;
-
-@RealmClass
-public class ReviewsPage implements Parcelable, RealmModel {
+public class ReviewsPage implements Parcelable {
     @SerializedName("results")
-    private RealmList<Review> mReviews;
+    private List<Review> mReviews;
 
     // TODO: use these fields if needed
 //    @SerializedName("page")
@@ -29,8 +25,8 @@ public class ReviewsPage implements Parcelable, RealmModel {
     }
 
     private ReviewsPage(Parcel in) {
-        mReviews = new RealmList<>();
-        mReviews.addAll(in.readArrayList(Review.class.getClassLoader()));
+        mReviews = new ArrayList<>();
+        in.readList(mReviews, Review.class.getClassLoader());
     }
 
     public List<Review> getReviews() {

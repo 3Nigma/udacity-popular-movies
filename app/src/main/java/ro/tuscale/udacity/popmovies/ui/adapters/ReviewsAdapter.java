@@ -1,4 +1,4 @@
-package ro.tuscale.udacity.popmovies;
+package ro.tuscale.udacity.popmovies.ui.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;

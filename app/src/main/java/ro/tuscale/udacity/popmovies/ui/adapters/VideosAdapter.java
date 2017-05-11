@@ -1,4 +1,4 @@
-package ro.tuscale.udacity.popmovies;
+package ro.tuscale.udacity.popmovies.ui.adapters;
 
 import android.content.Context;
 import android.support.annotation.NonNull;
@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import io.reactivex.functions.Consumer;
+import ro.tuscale.udacity.popmovies.ItemClickHandler;
 import ro.tuscale.udacity.popmovies.databinding.MovieTrailerItemBinding;
 import ro.tuscale.udacity.popmovies.models.Movie;
 import ro.tuscale.udacity.popmovies.models.Video;

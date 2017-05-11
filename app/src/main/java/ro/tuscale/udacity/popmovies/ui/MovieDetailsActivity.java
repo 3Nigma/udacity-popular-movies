@@ -13,10 +13,11 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Toast;
 
-import ro.tuscale.udacity.popmovies.MovieDetailsViewModel;
+import ro.tuscale.udacity.popmovies.models.FavoriteMovieManager;
+import ro.tuscale.udacity.popmovies.ui.models.MovieDetailsViewModel;
 import ro.tuscale.udacity.popmovies.R;
-import ro.tuscale.udacity.popmovies.ReviewsAdapter;
-import ro.tuscale.udacity.popmovies.VideosAdapter;
+import ro.tuscale.udacity.popmovies.ui.adapters.ReviewsAdapter;
+import ro.tuscale.udacity.popmovies.ui.adapters.VideosAdapter;
 import ro.tuscale.udacity.popmovies.databinding.ActivityMovieDetailsBinding;
 import ro.tuscale.udacity.popmovies.models.Movie;
 import ro.tuscale.udacity.popmovies.models.Video;
@@ -25,6 +26,7 @@ public class MovieDetailsActivity extends AppCompatActivity implements VideosAda
     public static final String MOVIE_EXTRA_INTENT_KEY = "ro.tuscale.udacity.popmovies.ui.MovieDetailsActivity.MOVIE_EXTRA_INTENT";
 
     private Movie mMovie;
+    private FavoriteMovieManager mFavMovieManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,8 +77,9 @@ public class MovieDetailsActivity extends AppCompatActivity implements VideosAda
 
         // Prepare the Favorite button
         final FloatingActionButton fabFavorite = (FloatingActionButton) findViewById(R.id.fab_movie_details_favorite);
+        mFavMovieManager = new FavoriteMovieManager(this);
         if (fabFavorite != null) {
-            if (mMovie.isItFavorite()) {
+            if (mFavMovieManager.isMovieFavorited(mMovie)) {
                 fabFavorite.setImageResource(R.drawable.ic_favorite_full_white_24dp);
             } else {
                 fabFavorite.setImageResource(R.drawable.ic_favorite_empty_white_24dp);
@@ -84,15 +87,15 @@ public class MovieDetailsActivity extends AppCompatActivity implements VideosAda
             fabFavorite.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    boolean isMovieFavorite = mMovie.isItFavorite();
+                    boolean isMovieFavorite = mFavMovieManager.isMovieFavorited(mMovie);
 
                     if (isMovieFavorite) {
                         fabFavorite.setImageResource(R.drawable.ic_favorite_empty_white_24dp);
+                        mFavMovieManager.removeFromFavorites(mMovie);
                     } else {
                         fabFavorite.setImageResource(R.drawable.ic_favorite_full_white_24dp);
+                        mFavMovieManager.addToFavorites(mMovie);
                     }
-                    // Switch
-                    mMovie.setFavorited(!isMovieFavorite);
                 }
             });
         }

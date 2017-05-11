@@ -13,7 +13,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 
-import ro.tuscale.udacity.popmovies.MoviesAdapter;
+import ro.tuscale.udacity.popmovies.ui.adapters.MoviesAdapter;
 import ro.tuscale.udacity.popmovies.R;
 import ro.tuscale.udacity.popmovies.backend.SortingType;
 import ro.tuscale.udacity.popmovies.models.Movie;
